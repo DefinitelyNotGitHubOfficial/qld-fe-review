@@ -1,7 +1,8 @@
 <template>
   <div class="wrapper">
-    <h1>Search</h1>
+    
     <section>
+      <h1>Search</h1>
       <p>Find subscribers by name, email adderess or Id.</p>
       <div class="search__wrapper">
         <input id="search" placeholder="Search"  @keyup.enter="query(true)" /> <button class="button" @click="query(true)"><span class="material-symbols-outlined">search</span></button>
