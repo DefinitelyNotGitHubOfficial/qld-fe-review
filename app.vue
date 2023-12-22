@@ -43,8 +43,9 @@ export default {
         this.warn = true
         this.subscribers = []
       } else {
-        //push query params to url
+        //reset page
         if(page)this.currentPage = 0
+        //push query params to url
         this.$router.push(`/searchsubscribers?pageIndex=${this.currentPage}&search=${this.search}`)
         this.warn = false
         this.loading = true
@@ -60,17 +61,13 @@ export default {
       }
     },
     pageNext(){
-      if(this.currentPage + 1 === this.totalPages){
-        //nothing
-      } else {
+      if(this.currentPage + 1 <= this.totalPages){
         this.currentPage++
         this.query()
       }
     },
     pagePrevious(){
-      if(this.currentPage + 1 === 1){
-        //nothing happens
-      } else {
+      if(this.currentPage + 1 > 1){
         this.currentPage--
         this.query()
       }
