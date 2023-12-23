@@ -3,7 +3,7 @@
         <div v-for="(item, i) in subscribers" :key="i" class="item">
         <div class="title">{{item.Name}}</div>
         <div class="email">{{item.Email}}</div>
-        <div class="subscriber"><img src="/static/images/subscriber.jpg" />{{item.SubscriberId}}</div>
+        <div class="subscriber"><img src="/static/images/subscriber.jpg" alt="subsciber" />{{item.SubscriberId}}</div>
       </div>
     </div>
 
