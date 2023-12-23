@@ -54,10 +54,11 @@ export default {
           .then(json=>{
             this.subscribers = json.subscribers, 
             this.totalPages = json.totalResults % 10 > 0 ? (json.totalResults - (json.totalResults % 10)) / 10 + 1 : json.totalResults / 10,
-            this.subscribers.length < 1 ? this.noresults = true : this.noresults = false
+            this.subscribers.length < 1 ? this.noresults = true : this.noresults = false,
+            this.loading = false
             }
           )
-          .then(this.loading = false)
+          // .then(this.loading = false)
       }
     },
     pageNext(){
