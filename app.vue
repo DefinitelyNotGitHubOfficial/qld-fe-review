@@ -5,7 +5,7 @@
       <h1>Search</h1>
       <p>Find subscribers by name, email adderess or Id.</p>
       <div class="search__wrapper">
-        <input id="search" placeholder="Search"  @keyup.enter="query(true)" /> <button class="button" @click="query(true)"><span class="material-symbols-outlined">search</span></button>
+        <input id="search" placeholder="Search"  @keyup.enter="query(true, true)" /> <button class="button" @click="query(true, true)"><span class="material-symbols-outlined">search</span></button>
       </div>
       <div id="warn" class="message" v-if="warn">Enter at least 3 characters</div> 
       <div id="loading" class="message" v-if="loading">Loading...</div> 
@@ -37,8 +37,8 @@ export default {
     }
   },
   methods: {
-    async query(page){
-      this.search = document.getElementById('search').value
+    async query(page, input){
+      if(input)this.search = document.getElementById('search').value
       if(this.search.length < 3 && this.search.length != 0) {
         this.warn = true
         this.subscribers = []
@@ -75,33 +75,18 @@ export default {
   },
   mounted(){
     if(this.$route.query.search && this.$route.query.pageIndex ){
-      this.loading = true
-      fetch(`https://tech-test.questline.com/searchsubscribers?pageIndex=${parseInt(this.$route.query.pageIndex)}&search=${this.$route.query.search}`)
-        .then(res=>res.json())
-        .then(json=>{
-          this.subscribers = json.subscribers, 
-          this.totalPages = json.totalResults % 10 > 0 ? (json.totalResults - (json.totalResults % 10)) / 10 + 1 : json.totalResults / 10,
-          this.subscribers.length < 1 ? this.noresults = true : this.noresults = false,
-          this.loading = false,
-          this.currentPage = parseInt(this.$route.query.pageIndex)
-          }
-        )
+      this.currentPage = parseInt(this.$route.query.pageIndex)
+      this.search = this.$route.query.search
+      this.query()
     } 
     else if (this.$route.query.search === ""){
-      this.loading = true
-      this.currentPage = this.$route.query.pageIndex 
-      fetch(`https://tech-test.questline.com/searchsubscribers?pageIndex=${parseInt(this.$route.query.pageIndex)}&search=${this.$route.query.search}`)
-        .then(res=>res.json())
-        .then(json=>{
-          this.subscribers = json.subscribers, 
-          this.totalPages = json.totalResults % 10 > 0 ? (json.totalResults - (json.totalResults % 10)) / 10 + 1 : json.totalResults / 10,
-          this.subscribers.length < 1 ? this.noresults = true : this.noresults = false
-          }
-        )
-        .then(
-          this.loading = false,
-          this.currentPage = parseInt(this.$route.query.pageIndex)
-          )
+      if(this.$route.query.pageIndex){
+        this.currentPage = parseInt(this.$route.query.pageIndex)
+      } else {
+        this.currentPage = 0
+      }
+      this.search = ""
+      this.query()
     }
   }
 }
@@ -136,7 +121,7 @@ input {
     font-size: 1.6rem;
   }
   &:hover {
-    background-color: #555;
+    background-color: $highlight;
   }
 }
 .search__wrapper {
@@ -179,5 +164,8 @@ input {
 .disabled {
   background-color: #888;
   cursor: not-allowed;
+  &:hover {
+    background-color: #888;
+  }
 }
 </style>
