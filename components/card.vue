@@ -29,13 +29,22 @@ export default {
   gap: 15px;
 }
 .item {
-  height: 64px;
-  width: 252px;
   border: solid 1px #D6D6D6;
   border-radius: $radius;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .1);
+  height: 64px;
   padding: 40px 24px;
   text-align: left;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .1);
+  width: 252px;
+  @media (max-width: 1040px) {
+    width: calc(33% - 60px);
+  }
+  @media (max-width: 700px) {
+    width: calc(50% - 60px);
+  }
+  @media (max-width: 400px) {
+    width: calc(100%);
+  }
 }
 .title {
   font-size: 18px;
