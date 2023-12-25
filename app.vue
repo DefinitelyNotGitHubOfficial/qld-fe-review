@@ -10,6 +10,7 @@
       <div id="warn" class="message" v-if="warn">Enter at least 3 characters</div> 
       <div id="loading" class="message" v-if="loading">Loading...</div> 
       <div id="noresults" class="message" v-if="noresults">No results. Try a different search.</div> 
+      <div id="rejected" class="message" v-if="rejected">Unable to resolve API, please try again another time.</div> 
     </section>
     <section>
       <card :subscribers="subscribers" />
@@ -33,6 +34,7 @@ export default {
       warn: false,
       loading: false,
       noresults: false,
+      rejected: false,
       search:''
     }
   },
@@ -55,9 +57,14 @@ export default {
             this.subscribers = json.subscribers, 
             this.totalPages = json.totalResults % 10 > 0 ? (json.totalResults - (json.totalResults % 10)) / 10 + 1 : json.totalResults / 10,
             this.subscribers.length < 1 ? this.noresults = true : this.noresults = false,
-            this.loading = false
+            this.loading = false,
+            this.rejected = false;
             }
           )
+          .catch(() => {
+            this.loading = false;
+            this.rejected = true;
+          })
       } 
     },
     pageNext(){
