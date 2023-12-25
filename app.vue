@@ -5,7 +5,7 @@
       <h1>Search</h1>
       <p>Find subscribers by name, email adderess or Id.</p>
       <div class="search__wrapper">
-        <input id="search" placeholder="Search"  @keyup.enter="query(true, true)" /> <button class="button" @click="query(true, true)"><span class="material-symbols-outlined">search</span></button>
+        <input id="search" placeholder="Search"  @keyup.enter="query(true)" /> <button class="button" @click="query(true)"><span class="material-symbols-outlined">search</span></button>
       </div>
       <div id="warn" class="message" v-if="warn">Enter at least 3 characters</div> 
       <div id="loading" class="message" v-if="loading">Loading...</div> 
@@ -39,14 +39,18 @@ export default {
     }
   },
   methods: {
-    async query(page, input){
-      if(input)this.search = document.getElementById('search').value
-      if(this.search.length < 3 && this.search.length != 0) {
+    async query(input){
+      if(input){
+        this.search = document.getElementById('search').value
+        this.currentPage = 0
+      }
+      if(this.search.length < 3 && this.search.length !== 0) {
         this.warn = true
+        this.noresults = false
+        this.loading = false
+        this.rejected = false
         this.subscribers = []
       } else {
-        //reset results
-        if(page)this.currentPage = 0
         //push query params to url
         this.$router.push(`/searchsubscribers?pageIndex=${this.currentPage}&search=${this.search}`)
         this.warn = false
